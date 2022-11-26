@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: leaflet
+  labels:
+    app: leaflet
+    service: leaflet
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: leaflet
+      service: leaflet
+  template:
+    metadata:
+      labels:
+        app: leaflet
+        service: leaflet
+    spec:
+      containers:
+        - name: leaflet
+          image: ghcr.io/fireacademy/leaflet:1.2.6
+          env:
+            - name: FASTSYNC_CMD
+              valueFrom:
+                secretKeyRef:
+                  name: fastsync
+                  key: cmd
+          ports:
+            - name: http
+              containerPort: 18444
+          resources:
+            requests:
+              cpu: "3"
+              memory: "6G"
+            limits:
+              cpu: "4"
+              memory: "8G"
+          startupProbe:
+            httpGet:
+              path: /ready
+              port: 18444
+              scheme: HTTP
+            initialDelaySeconds: 1200
+            failureThreshold: 30 
+            periodSeconds: 10

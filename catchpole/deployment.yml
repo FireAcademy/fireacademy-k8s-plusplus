@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catchpole
+  labels:
+    app: catchpole
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: catchpole
+  template:
+    metadata:
+      labels:
+        app: catchpole
+    spec:
+      containers:
+        - name: catchpole
+          image: ghcr.io/fireacademy/catchpole:1.0.3
+          env:
+            - name: CATCHPOLE_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: catchpole
+                  key: CATCHPOLE_ADMIN_PASSWORD
+            - name: DB_CONN_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: catchpole
+                  key: DB_CONN_STRING
+            - name: FIREBASE_ADMIN_CREDS
+              valueFrom:
+                secretKeyRef:
+                  name: catchpole
+                  key: FIREBASE_ADMIN_CREDS
+            - name: STRIPE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: catchpole
+                  key: STRIPE_SECRET_KEY
+            - name: STRIPE_WEBHOOK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: catchpole
+                  key: STRIPE_WEBHOOK_SECRET
+            - name: STRIPE_PRICE_ID
+              valueFrom:
+                secretKeyRef:
+                  name: catchpole
+                  key: STRIPE_PRICE_ID
+            - name: DB_MAX_IDLE_CONNS
+              valueFrom:
+                secretKeyRef:
+                  name: catchpole
+                  key: DB_MAX_IDLE_CONNS
+            - name: DB_MAX_OPEN_CONNS
+              valueFrom:
+                secretKeyRef:
+                  name: catchpole
+                  key: DB_MAX_OPEN_CONNS
+          ports:
+            - name: http
+              containerPort: 5000
+          resources:
+            requests:
+              cpu: "1"
+              memory: "1G"
+            limits:
+              cpu: "2"
+              memory: "4G"
+          startupProbe:
+            httpGet:
+              path: /
+              port: 5000
+              scheme: HTTP
+            initialDelaySeconds: 7
+            failureThreshold: 3 
+            periodSeconds: 5
