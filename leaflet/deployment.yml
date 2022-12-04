@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: leaflet
-          image: ghcr.io/fireacademy/leaflet:1.2.6
+          image: ghcr.io/fireacademy/leaflet:1.2.7
           env:
             - name: FASTSYNC_CMD
               valueFrom:
@@ -47,5 +47,5 @@ spec:
               port: 18444
               scheme: HTTP
             initialDelaySeconds: 1200
-            failureThreshold: 30 
+            failureThreshold: 30
             periodSeconds: 10
