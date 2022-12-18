@@ -71,8 +71,8 @@ spec:
               cpu: "1"
               memory: "1G"
             limits:
-              cpu: "2"
-              memory: "4G"
+              cpu: "1"
+              memory: "1G"
           startupProbe:
             httpGet:
               path: /

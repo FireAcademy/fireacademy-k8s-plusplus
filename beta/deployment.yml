@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: beta
+  labels:
+    app: beta
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: beta
+  template:
+    metadata:
+      labels:
+        app: beta
+    spec:
+      containers:
+        - name: beta
+          image: ghcr.io/fireacademy/beta:1.0.2
+          env:
+            - name: BETA_LISTEN_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: beta
+                  key: BETA_LISTEN_PORT
+            - name: DB_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: beta
+                  key: DB_CONNECTION_STRING
+            - name: DB_MAX_IDLE_CONNECTIONS
+              valueFrom:
+                secretKeyRef:
+                  name: beta
+                  key: DB_MAX_IDLE_CONNECTIONS
+            - name: DB_MAX_OPEN_CONNECTIONS
+              valueFrom:
+                secretKeyRef:
+                  name: beta
+                  key: DB_MAX_OPEN_CONNECTIONS
+          ports:
+            - name: http
+              containerPort: 5000
+          resources:
+            requests:
+              cpu: "1"
+              memory: "1G"
+            limits:
+              cpu: "1"
+              memory: "1G"
+          startupProbe:
+            httpGet:
+              path: /
+              port: 5000
+              scheme: HTTP
+            initialDelaySeconds: 7
+            failureThreshold: 3 
+            periodSeconds: 5
