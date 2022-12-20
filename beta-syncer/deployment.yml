@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: beta-syncer
-          image: ghcr.io/fireacademy/beta-syncer:1.0.0
+          image: ghcr.io/fireacademy/beta-syncer:1.0.1
           env:
             - name: LEAFLET_BASE_URL
               valueFrom:
