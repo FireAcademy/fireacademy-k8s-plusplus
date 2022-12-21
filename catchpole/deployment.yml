@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: catchpole
-          image: ghcr.io/fireacademy/catchpole:1.1.6
+          image: ghcr.io/fireacademy/catchpole:1.1.7
           env:
             - name: CATCHPOLE_ADMIN_PASSWORD
               valueFrom:

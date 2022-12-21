@@ -29,4 +29,4 @@ spec:
       name: memory
       target:
         type: AverageValue
-        averageValue: 4G
+        averageValue: 6G
