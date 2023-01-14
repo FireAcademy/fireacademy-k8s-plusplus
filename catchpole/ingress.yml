@@ -20,8 +20,15 @@ spec:
   - host: "kraken.fireacademy.io"
     http:
       paths:
+      # - pathType: Prefix
+      #   path: /SECRET_HERE/
+      #   backend:
+      #     service:
+      #       name: fastsync
+      #       port:
+      #         number: 80
       - pathType: Prefix
-        path: "/"
+        path: /
         backend:
           service:
             name: catchpole

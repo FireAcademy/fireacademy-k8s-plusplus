@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: fastsync
-        image: ghcr.io/fireacademy/fastsync:1.1.4
+        image: ghcr.io/fireacademy/fastsync:1.1.5
         volumeMounts:
         - mountPath: /var/www/html
           name: chia-blockchain-db
@@ -46,4 +46,4 @@ spec:
       resources:
         requests:
           storage: 250G
-      storageClassName: do-block-storage
+      storageClassName: "do-block-storage"
