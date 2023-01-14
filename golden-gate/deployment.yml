@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: golden-gate
+  labels:
+    app: golden-gate
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: golden-gate
+  template:
+    metadata:
+      labels:
+        app: golden-gate
+    spec:
+      containers:
+        - name: golden-gate
+          image: ghcr.io/fireacademy/golden-gate:1.0.2
+          env:
+            - name: DATA_DUDE_API_KEY_INFO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: goldengate
+                  key: DATA_DUDE_API_KEY_INFO_URL
+            - name: DATA_DUDE_BILL_CREDITS_PACKAGE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: goldengate
+                  key: DATA_DUDE_BILL_CREDITS_PACKAGE_URL
+            - name: DATA_DUDE_RECORD_USAGE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: goldengate
+                  key: DATA_DUDE_RECORD_USAGE_URL
+            - name: DATA_DUDE_MANAGEMENT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: management
+                  key: token
+            - name: GOLDEN_GATE_LISTEN_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: goldengate
+                  key: GOLDEN_GATE_LISTEN_PORT
+            - name: REDIS_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: redis
+                  key: REDIS_CONNECTION_STRING
+          ports:
+            - name: http
+              containerPort: 5000
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "400Mi"
+            limits:
+              cpu: "200m"
+              memory: "400Mi"
