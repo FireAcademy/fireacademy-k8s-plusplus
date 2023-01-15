@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: kraken2-ingress
+  name: kraken-ingress
   namespace: default
   annotations:
     kubernetes.io/ingress.allow-http: "true"
@@ -13,7 +13,7 @@ spec:
       port:
         number: 5000
   rules:
-  - host: kraken2.fireacademy.io
+  - host: kraken.fireacademy.io
     http:
       paths:
       - pathType: Prefix

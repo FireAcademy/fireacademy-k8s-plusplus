@@ -1,13 +1,13 @@
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: letsencrypt-kraken2
+  name: letsencrypt-kraken
 spec:
   acme:
     email: y@kuhi.to
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: kraken2-fireacademy-io
+      name: kraken-fireacademy-io
     solvers:
     - http01:
         ingress:

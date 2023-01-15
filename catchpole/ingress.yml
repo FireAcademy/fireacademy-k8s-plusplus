@@ -1,10 +1,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: kraken2-ingress
+  name: kraken-ingress
   annotations:
     kubernetes.io/ingress.allow-http: "false"
-    cert-manager.io/cluster-issuer: letsencrypt-kraken2
+    cert-manager.io/cluster-issuer: letsencrypt-kraken
     kubernetes.io/ingress.class: "nginx"
 spec:
   defaultBackend:
@@ -14,10 +14,10 @@ spec:
         number: 5000
   tls:
   - hosts:
-    - kraken2.fireacademy.io
-    secretName: kraken2-fireacademy-io
+    - kraken.fireacademy.io
+    secretName: kraken-fireacademy-io
   rules:
-  - host: "kraken2.fireacademy.io"
+  - host: "kraken.fireacademy.io"
     http:
       paths:
       # - pathType: Prefix
