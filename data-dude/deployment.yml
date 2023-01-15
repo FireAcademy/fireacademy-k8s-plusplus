@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-dude
+  labels:
+    app: data-dude
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: data-dude
+  template:
+    metadata:
+      labels:
+        app: data-dude
+    spec:
+      containers:
+        - name: data-dude
+          image: ghcr.io/fireacademy/data-dude:1.0.2
+          env:
+            - name: DB_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: maindb
+                  key: DB_CONNECTION_STRING
+            - name: STRIPE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stripe
+                  key: SECRET_KEY
+            - name: STRIPE_WEBHOOK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: stripe
+                  key: WEBHOOK_SECRET
+            - name: DATA_DUDE_MANAGEMENT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: management
+                  key: token
+            - name: DATA_DUDE_LISTEN_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: datadude
+                  key: DATA_DUDE_LISTEN_PORT
+            - name: DB_MAX_IDLE_CONNECTIONS
+              valueFrom:
+                secretKeyRef:
+                  name: datadude
+                  key: DB_MAX_IDLE_CONNECTIONS
+            - name: DB_MAX_OPEN_CONNECTIONS
+              valueFrom:
+                secretKeyRef:
+                  name: datadude
+                  key: DB_MAX_OPEN_CONNECTIONS
+            - name: FIREBASE_ADMIN_CREDS
+              valueFrom:
+                secretKeyRef:
+                  name: datadude
+                  key: FIREBASE_ADMIN_CREDS
+            - name: GOLDEN_GATE_ADDRESS
+              valueFrom:
+                secretKeyRef:
+                  name: datadude
+                  key: GOLDEN_GATE_ADDRESS
+          ports:
+            - name: http
+              containerPort: 5000
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "400Mi"
+            limits:
+              cpu: "200m"
+              memory: "400Mi"
+          startupProbe:
+            httpGet:
+              path: /
+              port: 5000
+              scheme: HTTP
+            initialDelaySeconds: 1
+            failureThreshold: 3
+            periodSeconds: 5
