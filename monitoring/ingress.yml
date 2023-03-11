@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: monitoring-ingress
+  namespace: platform
+  annotations:
+    kubernetes.io/ingress.allow-http: "false"
+    cert-manager.io/cluster-issuer: letsencrypt-kraken
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  defaultBackend:
+    service:
+      name: my-release-signoz-frontend
+      port:
+        number: 3301
+  tls:
+  - hosts:
+    - monitoring.fireacademy.io
+    secretName: monitoring-fireacademy-io
+  rules:
+  - host: "monitoring.fireacademy.io"
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: my-release-signoz-frontend
+            port:
+              number: 3301

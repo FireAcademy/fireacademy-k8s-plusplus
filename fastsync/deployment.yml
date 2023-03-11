@@ -21,8 +21,8 @@ spec:
           name: chia-blockchain-db
         resources:
           requests:
-            cpu: "3.0"
-            memory: "4G"
+              cpu: "3"
+              memory: "6G"
         ports:
           - name: http
             containerPort: 80

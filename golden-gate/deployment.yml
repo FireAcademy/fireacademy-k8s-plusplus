@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: golden-gate
-          image: ghcr.io/fireacademy/golden-gate:1.0.3
+          image: ghcr.io/fireacademy/golden-gate:1.1.1
           env:
             - name: DATA_DUDE_API_KEY_INFO_URL
               valueFrom:
@@ -53,13 +53,28 @@ spec:
                 secretKeyRef:
                   name: redis
                   key: REDIS_CONNECTION_STRING
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: telemetry
+                  key: otlp_endpoint
+            - name: INSECURE_MODE
+              valueFrom:
+                secretKeyRef:
+                  name: telemetry
+                  key: insecure
+            - name: SERVICE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: telemetry
+                  key: golden-gate_service_name
           ports:
             - name: http
               containerPort: 5000
           resources:
             requests:
-              cpu: "200m"
-              memory: "400Mi"
+              cpu: "333m"
+              memory: "500Mi"
             limits:
-              cpu: "200m"
-              memory: "400Mi"
+              cpu: "333m"
+              memory: "500Mi"

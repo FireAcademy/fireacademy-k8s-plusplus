@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: data-dude
-          image: ghcr.io/fireacademy/data-dude:1.0.2
+          image: ghcr.io/fireacademy/data-dude:1.1.4
           env:
             - name: DB_CONNECTION_STRING
               valueFrom:
@@ -68,16 +68,31 @@ spec:
                 secretKeyRef:
                   name: datadude
                   key: GOLDEN_GATE_ADDRESS
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: telemetry
+                  key: otlp_endpoint
+            - name: INSECURE_MODE
+              valueFrom:
+                secretKeyRef:
+                  name: telemetry
+                  key: insecure
+            - name: SERVICE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: telemetry
+                  key: data-dude_service_name
           ports:
             - name: http
               containerPort: 5000
           resources:
             requests:
-              cpu: "200m"
-              memory: "400Mi"
+              cpu: "333m"
+              memory: "500Mi"
             limits:
-              cpu: "200m"
-              memory: "400Mi"
+              cpu: "333m"
+              memory: "500Mi"
           startupProbe:
             httpGet:
               path: /
