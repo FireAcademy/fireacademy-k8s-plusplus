@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: golden-gate
-          image: ghcr.io/fireacademy/golden-gate:1.1.1
+          image: ghcr.io/fireacademy/golden-gate:1.1.2
           env:
             - name: DATA_DUDE_API_KEY_INFO_URL
               valueFrom:
